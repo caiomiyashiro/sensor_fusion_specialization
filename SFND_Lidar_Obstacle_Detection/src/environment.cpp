@@ -113,6 +113,7 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
         all_points.push_back(point);
     }
 
+    // euclideanCluster is at kdtree.h (challenges on importing from different files...)
     std::vector<std::vector<int>> clusters = euclideanCluster(all_points, tree, .4);
   	int clusterId = 0;
     std::vector<Color> color_vector =  {Color(1,0,0), Color(0,1,0), Color(0,0,1), Color(1,1,0), Color(0,1,1), Color(1,0,1)};

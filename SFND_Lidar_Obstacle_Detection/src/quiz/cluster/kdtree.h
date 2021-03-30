@@ -60,8 +60,8 @@ struct KdTree
 	void search_helper(std::vector<float> target, float distanceTol, int depth, Node *node, std::vector<int>& ids){
 		if(node != NULL){
 			if(node->point[0] >= (target[0]-distanceTol) && node->point[0] <= (target[0]+distanceTol) && node->point[1] >= (target[1]-distanceTol) && node->point[1] <= (target[1]+distanceTol)){
-				float distance = sqrt((node->point[0] - target[0])*(node->point[0] - target[0]) + (node->point[1] - target[1])*(node->point[1] - target[1]));
-				if(distance <= distanceTol){
+				float euclidean_distance = sqrt((node->point[0] - target[0])*(node->point[0] - target[0]) + (node->point[1] - target[1])*(node->point[1] - target[1]));
+				if(euclidean_distance <= distanceTol){
 					ids.push_back(node->id);
 				}
 			}
@@ -90,14 +90,14 @@ struct KdTree
 
 };
 
-void cluster_helper(int indice, const std::vector<std::vector<float>> points, std::vector<int>& cluster, std::vector<bool>& processed, KdTree* tree, float distanceTol){
-	processed[indice] = true;
-	cluster.push_back(indice);
+void cluster_helper(int index, const std::vector<std::vector<float>> cloud_points, std::vector<int>& cluster, std::vector<bool>& processed_nodes, KdTree* tree, float distanceTol){
+	processed_nodes[index] = true;
+	cluster.push_back(index);
 
-	std::vector<int> nearest = tree-> search(points[indice], distanceTol);
-	for(int id: nearest){
-		if(!processed[id]){
-			cluster_helper(id, points, cluster, processed, tree, distanceTol);
+	std::vector<int> nearest_points = tree-> search(cloud_points[index], distanceTol);
+	for(int id: nearest_points){
+		if(!processed_nodes[id]){
+			cluster_helper(id, cloud_points, cluster, processed_nodes, tree, distanceTol);
 		}
 	}
 }

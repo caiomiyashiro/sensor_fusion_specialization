@@ -13,6 +13,8 @@ render/render.h
 /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/render/render.h
 processPointClouds.h
 /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/processPointClouds.h
+quiz/cluster/kdtree.h
+/Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/quiz/cluster/kdtree.h
 processPointClouds.cpp
 /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/processPointClouds.cpp
 
@@ -57,18 +59,20 @@ ctime
 -
 chrono
 -
+random
+-
 unordered_set
 -
 render/box.h
 /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/render/box.h
 
+/Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/quiz/cluster/kdtree.h
+../../render/render.h
+/Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/render/render.h
+
 /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/render/box.h
 Eigen/Geometry
 -
-
-/Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/render/render.cpp
-render.h
-/Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/render/render.h
 
 /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/render/render.h
 pcl/visualization/pcl_visualizer.h

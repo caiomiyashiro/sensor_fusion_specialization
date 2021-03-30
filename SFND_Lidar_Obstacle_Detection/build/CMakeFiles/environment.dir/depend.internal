@@ -5,6 +5,7 @@ CMakeFiles/environment.dir/src/environment.cpp.o
  /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/environment.cpp
  /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/processPointClouds.cpp
  /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/processPointClouds.h
+ /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/quiz/cluster/kdtree.h
  /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/render/box.h
  /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/render/render.h
  /Users/caiomiyashiro/repo/sensor_fusion_specialization/SFND_Lidar_Obstacle_Detection/src/sensors/lidar.h

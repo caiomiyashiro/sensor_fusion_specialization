@@ -5,6 +5,7 @@
 #include "sensors/lidar.h"
 #include "render/render.h"
 #include "processPointClouds.h"
+#include "quiz/cluster/kdtree.h"
 // using templates for processPointClouds so also include .cpp to help linker
 #include "processPointClouds.cpp"
 
@@ -70,6 +71,7 @@ void simpleHighway(pcl::visualization::PCLVisualizer::Ptr& viewer)
         renderBox(viewer, box, i, color_vector[i], .5);
         i++;
     }
+    // Clusterize custom function
   
 }
 
@@ -84,22 +86,49 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
     // renderPointCloud(viewer,filter_cloud,"filter_cloud");
 
     // segment into {obstacles and floor}
-    std::pair<typename pcl::PointCloud<pcl::PointXYZI>::Ptr, typename pcl::PointCloud<pcl::PointXYZI>::Ptr> segmentedClouds = pointProcessorI->SegmentPlane(filter_cloud, 200, 0.2);
+    // std::pair<typename pcl::PointCloud<pcl::PointXYZI>::Ptr, typename pcl::PointCloud<pcl::PointXYZI>::Ptr> segmentedClouds = pointProcessorI->SegmentPlane(filter_cloud, 200, 0.2);
+    std::pair<typename pcl::PointCloud<pcl::PointXYZI>::Ptr, typename pcl::PointCloud<pcl::PointXYZI>::Ptr> segmentedClouds = pointProcessorI->SegmentPlaneCustom(filter_cloud, 200, 0.2);
     // renderPointCloud(viewer, segmentedClouds.first, "Obstacles", Color(1,0,0));
     renderPointCloud(viewer, segmentedClouds.second, "Plane", Color(0,1,0));
 
-    // Clusterize and render points
-    std::vector<typename pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters = pointProcessorI->Clustering(segmentedClouds.first, .5, 20, 700);
-    int i = 0;
-    std::vector<Color> color_vector =  {Color(1,0,0), Color(0,1,0), Color(0,0,1), Color(1,1,0), Color(0,1,1), Color(1,0,1)};
-    for(pcl::PointCloud<pcl::PointXYZI>::Ptr cluster : clusters){
-        std::stringstream ss;
-        ss << "cluster_" << i;
-        renderPointCloud(viewer, cluster, ss.str(), color_vector[i]);
-        Box box = pointProcessorI->BoundingBox(cluster);
-        renderBox(viewer, box, i, color_vector[i], .5);
-        i++;
+    // Clusterize and render points - using PCL method
+    // std::vector<typename pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters = pointProcessorI->Clustering(segmentedClouds.first, .5, 20, 700);
+    // int i = 0;
+    // std::vector<Color> color_vector =  {Color(1,0,0), Color(0,1,0), Color(0,0,1), Color(1,1,0), Color(0,1,1), Color(1,0,1)};
+    // for(pcl::PointCloud<pcl::PointXYZI>::Ptr cluster : clusters){
+    //     std::stringstream ss;
+    //     ss << "cluster_" << i;
+    //     renderPointCloud(viewer, cluster, ss.str(), color_vector[i]);
+    //     Box box = pointProcessorI->BoundingBox(cluster);
+    //     renderBox(viewer, box, i, color_vector[i], .5);
+    //     i++;
+    // }
+    
+    KdTree* tree = new KdTree;
+    std::vector<std::vector<float>> all_points;
+    for (int i=0; i<segmentedClouds.first->size(); i++) {
+        pcl::PointXYZI pcl_point = segmentedClouds.first->points[i];
+        std::vector<float> point = {pcl_point.x, pcl_point.y, pcl_point.z};
+    	tree->insert(point, i);
+        all_points.push_back(point);
     }
+
+    std::vector<std::vector<int>> clusters = euclideanCluster(all_points, tree, .4);
+  	int clusterId = 0;
+    std::vector<Color> color_vector =  {Color(1,0,0), Color(0,1,0), Color(0,0,1), Color(1,1,0), Color(0,1,1), Color(1,0,1)};
+  	for(std::vector<int> cluster : clusters)
+  	{
+  		pcl::PointCloud<pcl::PointXYZI>::Ptr clusterCloud(new pcl::PointCloud<pcl::PointXYZI>());
+  		for(int indice: cluster)
+  			clusterCloud->points.push_back(pcl::PointXYZI(all_points[indice][0],all_points[indice][1],all_points[indice][2],0));
+  		renderPointCloud(viewer, clusterCloud,"cluster"+std::to_string(clusterId),color_vector[clusterId%6]);
+		Box box = pointProcessorI->BoundingBox(clusterCloud);
+        renderBox(viewer, box, clusterId, color_vector[clusterId%6], .5);
+  		++clusterId;
+  	}
+
+  	if(clusters.size()==0)
+  		renderPointCloud(viewer,inputCloud,"data");
 
 }
 
@@ -137,11 +166,20 @@ int main (int argc, char** argv)
     initCamera(setAngle, viewer);
     // simpleHighway(viewer);
 
+    // one image test
+    // ProcessPointClouds<pcl::PointXYZI>* pointProcessorI = new ProcessPointClouds<pcl::PointXYZI>();
+    // pcl::PointCloud<pcl::PointXYZI>::Ptr inputCloud = pointProcessorI->loadPcd("../src/sensors/data/pcd/data_1/0000000000.pcd");
+    // cityBlock(viewer, pointProcessorI, inputCloud);
+    // while (!viewer->wasStopped ())
+    // {
+    //     viewer->spinOnce ();
+    // } 
+
+    // stream image
     ProcessPointClouds<pcl::PointXYZI>* pointProcessorI = new ProcessPointClouds<pcl::PointXYZI>();
     std::vector<boost::filesystem::path> stream = pointProcessorI->streamPcd("../src/sensors/data/pcd/data_1");
     auto streamIterator = stream.begin();
     pcl::PointCloud<pcl::PointXYZI>::Ptr inputCloudI;
-    
     while (!viewer->wasStopped ()){
 
         // Clear viewer

@@ -162,7 +162,7 @@ std::unordered_set<int> Ransac3D(pcl::PointCloud<pcl::PointXYZ>::Ptr cloud, int 
 		// std::cout << "temp_inliersResult.size(): " << temp_inliersResult.size() << " - inliersResult.size(): " << inliersResult.size() << std::endl;
 		
 		if(temp_inliersResult.size() > inliersResult.size()){
-			std::cout << "loop " << i << std::endl;
+			// std::cout << "loop " << i << std::endl;
 			// std:cout << "----------- New Inliers set of size " << temp_inliersResult.size() << std::endl;
 			inliersResult = temp_inliersResult;
 		}

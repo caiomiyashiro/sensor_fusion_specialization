@@ -86,23 +86,9 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
     // renderPointCloud(viewer,filter_cloud,"filter_cloud");
 
     // segment into {obstacles and floor}
-    // std::pair<typename pcl::PointCloud<pcl::PointXYZI>::Ptr, typename pcl::PointCloud<pcl::PointXYZI>::Ptr> segmentedClouds = pointProcessorI->SegmentPlane(filter_cloud, 200, 0.2);
     std::pair<typename pcl::PointCloud<pcl::PointXYZI>::Ptr, typename pcl::PointCloud<pcl::PointXYZI>::Ptr> segmentedClouds = pointProcessorI->SegmentPlaneCustom(filter_cloud, 200, 0.2);
     // renderPointCloud(viewer, segmentedClouds.first, "Obstacles", Color(1,0,0));
     renderPointCloud(viewer, segmentedClouds.second, "Plane", Color(0,1,0));
-
-    // Clusterize and render points - using PCL method
-    // std::vector<typename pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters = pointProcessorI->Clustering(segmentedClouds.first, .5, 20, 700);
-    // int i = 0;
-    // std::vector<Color> color_vector =  {Color(1,0,0), Color(0,1,0), Color(0,0,1), Color(1,1,0), Color(0,1,1), Color(1,0,1)};
-    // for(pcl::PointCloud<pcl::PointXYZI>::Ptr cluster : clusters){
-    //     std::stringstream ss;
-    //     ss << "cluster_" << i;
-    //     renderPointCloud(viewer, cluster, ss.str(), color_vector[i]);
-    //     Box box = pointProcessorI->BoundingBox(cluster);
-    //     renderBox(viewer, box, i, color_vector[i], .5);
-    //     i++;
-    // }
     
     KdTree* tree = new KdTree;
     std::vector<std::vector<float>> all_points;
@@ -127,6 +113,39 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
         renderBox(viewer, box, clusterId, color_vector[clusterId%6], .5);
   		++clusterId;
   	}
+
+  	if(clusters.size()==0)
+  		renderPointCloud(viewer,inputCloud,"data");
+
+}
+
+void cityBlockPCL(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointClouds<pcl::PointXYZI>* pointProcessorI, const pcl::PointCloud<pcl::PointXYZI>::Ptr& inputCloud)
+{
+    // ----------------------------------------------------
+    // -----Open 3D viewer and display City Block     -----
+    // ----------------------------------------------------
+
+    // sampling and cropping
+    pcl::PointCloud<pcl::PointXYZI>::Ptr filter_cloud = pointProcessorI->FilterCloud(inputCloud, .2, Eigen::Vector4f (-15, -6, -5, 1), Eigen::Vector4f ( 15, 8, 5, 1));
+    // renderPointCloud(viewer,filter_cloud,"filter_cloud");
+
+    // segment into {obstacles and floor}
+    std::pair<typename pcl::PointCloud<pcl::PointXYZI>::Ptr, typename pcl::PointCloud<pcl::PointXYZI>::Ptr> segmentedClouds = pointProcessorI->SegmentPlane(filter_cloud, 200, 0.2);
+    // renderPointCloud(viewer, segmentedClouds.first, "Obstacles", Color(1,0,0));
+    renderPointCloud(viewer, segmentedClouds.second, "Plane", Color(0,1,0));
+
+    // Clusterize and render points - using PCL method
+    std::vector<typename pcl::PointCloud<pcl::PointXYZI>::Ptr> clusters = pointProcessorI->Clustering(segmentedClouds.first, .5, 20, 700);
+    int i = 0;
+    std::vector<Color> color_vector =  {Color(1,0,0), Color(0,1,0), Color(0,0,1), Color(1,1,0), Color(0,1,1), Color(1,0,1)};
+    for(pcl::PointCloud<pcl::PointXYZI>::Ptr cluster : clusters){
+        std::stringstream ss;
+        ss << "cluster_" << i;
+        renderPointCloud(viewer, cluster, ss.str(), color_vector[i]);
+        Box box = pointProcessorI->BoundingBox(cluster);
+        renderBox(viewer, box, i, color_vector[i], .5);
+        i++;
+    }
 
   	if(clusters.size()==0)
   		renderPointCloud(viewer,inputCloud,"data");
@@ -189,7 +208,8 @@ int main (int argc, char** argv)
 
         // Load pcd and run obstacle detection process
         inputCloudI = pointProcessorI->loadPcd((*streamIterator).string());
-        cityBlock(viewer, pointProcessorI, inputCloudI);
+        cityBlock(viewer, pointProcessorI, inputCloudI);    // custom algorithms 
+        // cityBlockPCL(viewer, pointProcessorI, inputCloudI); // using PCL's standard algorithms
 
         streamIterator++;
         if(streamIterator == stream.end())

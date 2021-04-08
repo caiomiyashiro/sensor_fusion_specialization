@@ -143,13 +143,19 @@ std::pair<typename pcl::PointCloud<PointT>::Ptr, typename pcl::PointCloud<PointT
 	// For max iterations 
 	int count_iter_max_outliers = 0;
 	for(int i=0; i < maxIterations; i++){
+    	
 		// Randomly sample subset and fit line
-		typename std::vector<PointT> sample;
-		std::sample(cloud->points.begin(), cloud->points.end(), std::back_inserter(sample), 3,  std::mt19937{std::random_device{}()});
+        std::set<int> random_indexes;
+        while(random_indexes.size() <= 3){
+        	random_indexes.insert(std::rand() % (cloud->points.size()));
+        }
 		
-		PointT p1 = sample[0];
-		PointT p2 = sample[1];
-		PointT p3 = sample[2];
+        auto itr = random_indexes.begin();
+		PointT p1 = cloud->points[*itr];
+        itr++;
+		PointT p2 = cloud->points[*itr];
+        itr++;
+		PointT p3 = cloud->points[*itr];
 
 		std::vector<float> v1 = {(p2.x - p1.x), (p2.y - p1.y), (p2.z - p1.z)};
 		std::vector<float> v2 = {(p3.x - p1.x), (p3.y - p1.y), (p3.z - p1.z)};

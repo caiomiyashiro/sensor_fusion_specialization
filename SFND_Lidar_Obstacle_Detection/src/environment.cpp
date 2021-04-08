@@ -106,8 +106,11 @@ void cityBlock(pcl::visualization::PCLVisualizer::Ptr& viewer, ProcessPointCloud
   	for(std::vector<int> cluster : clusters)
   	{
   		pcl::PointCloud<pcl::PointXYZI>::Ptr clusterCloud(new pcl::PointCloud<pcl::PointXYZI>());
-  		for(int indice: cluster)
-  			clusterCloud->points.push_back(pcl::PointXYZI(all_points[indice][0],all_points[indice][1],all_points[indice][2],0));
+  		for(int indice: cluster){
+      		pcl::PointXYZI temp_point;
+      		temp_point.x=all_points[indice][0]; temp_point.y=all_points[indice][1]; temp_point.z=all_points[indice][2]; temp_point.intensity=0;
+  			clusterCloud->points.push_back(temp_point);
+        }
   		renderPointCloud(viewer, clusterCloud,"cluster"+std::to_string(clusterId),color_vector[clusterId%6]);
 		Box box = pointProcessorI->BoundingBox(clusterCloud);
         renderBox(viewer, box, clusterId, color_vector[clusterId%6], .5);

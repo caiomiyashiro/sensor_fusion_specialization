@@ -1,0 +1,21 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "(lldb) Launch",
+            "type": "cppdbg",
+            "request": "launch",
+            // "program": "/Users/caiomiyashiro/repo/SFND_Lidar_Obstacle_Detection/src/quiz/cluster/build/quizCluster",
+            "program": "/Users/caiomiyashiro/repo/sensor_fusion_specialization/2_Camera/SFND_2D_Feature_Tracking/build/2D_feature_tracking",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb"
+        }
+    ]
+}

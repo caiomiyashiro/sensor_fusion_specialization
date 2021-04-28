@@ -20,12 +20,11 @@
 
 #include "dataStructures.h"
 
-void detKeypointsHarris(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis=false);
-void detKeypointsShiTomasi(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, bool bVis=false);
+void detKeypointsShiTomasi_Harris(std::vector<cv::KeyPoint> &keypoints, double &detector_time, int &nbr_detected_keypoints, cv::Mat &img, bool use_harris, bool bVis=false);
 // implements FAST, BRISK, ORB, AKAZE, SIFT
-void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std::string detectorType, bool bVis=false);
-void descKeypoints(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descriptors, std::string descriptorType);
+void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, double &detector_time, int &nbr_detected_keypoints, double &avg_kp_size, cv::Mat &img, std::string detectorType, bool bVis=false);
+void descKeypoints(std::vector<cv::KeyPoint> &keypoints, double &descriptor_time, cv::Mat &img, cv::Mat &descriptors, std::string descriptorType);
 void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::KeyPoint> &kPtsRef, cv::Mat &descSource, cv::Mat &descRef,
-                      std::vector<cv::DMatch> &matches, std::string descriptorType, std::string matcherType, std::string selectorType);
+                      std::vector<cv::DMatch> &matches, std::string descriptorType, std::string matcherType, std::string selectorType, double &match_time);
 
 #endif /* matching2D_hpp */

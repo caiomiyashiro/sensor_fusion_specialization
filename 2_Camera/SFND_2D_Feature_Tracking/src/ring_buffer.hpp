@@ -13,8 +13,15 @@ class RingBuffer{
 
         RingBuffer(int max_size);
         void push(T elem);
+        void clean();
+        int get_size();
         T pop();
+        T* get_newest_elem_reference();
+        T* get_oldest_elem_reference();
+        
 };
+
+//////////////////////////////////////////
 
 template<typename T>
 RingBuffer<T>::RingBuffer(int max_size){
@@ -26,6 +33,17 @@ RingBuffer<T>::RingBuffer(int max_size){
 
 }
 
+template<typename T>
+void RingBuffer<T>::clean(){
+    this->head = 0;
+    this->tail = 0;
+    this->n_elements = 0;
+}
+
+template<typename T>
+int RingBuffer<T>::get_size(){
+    return this->n_elements;
+}
 
 template<typename T>
 void RingBuffer<T>::push(T elem){
@@ -59,6 +77,18 @@ T RingBuffer<T>::pop(){
         return elem;
     }
 }
+
+template<typename T>
+T* RingBuffer<T>::get_newest_elem_reference(){
+    return &this->buffer[this->head];
+}
+
+template<typename T>
+T* RingBuffer<T>::get_oldest_elem_reference(){
+    return &this->buffer[this->tail];
+}
+
+//////////////////////////////////////////
 
 template<typename T>
 std::ostream& operator<<(ostream& os, const RingBuffer<T> ring_buffer)

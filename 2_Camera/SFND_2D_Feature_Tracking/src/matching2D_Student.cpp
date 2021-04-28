@@ -86,6 +86,7 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, double &descriptor_time, cv:
     }else if (descriptorType.compare("SIFT") == 0)
     {
         extractor = cv::SIFT::create();
+        //cv::xfeatures2d::SiftDescriptorExtractor::create(); // course desktop version
     }
 
     // perform feature description
@@ -167,6 +168,7 @@ void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, double &detector_t
     else if (detectorType.compare("SIFT") == 0)
     {
         detector = cv::SIFT::create();
+        //cv::xfeatures2d::SIFT::create(); // course desktop version
     }
     else
     {

@@ -1,0 +1,8 @@
+The file 'yolov3.weights' contains the pre-trained network’s weights and has been made available by the authors of YOLO here.
+https://pjreddie.com/media/files/yolov3.weights
+
+The file 'yolov3.cfg' containing the network configuration is available here.
+https://github.com/pjreddie/darknet/blob/master/cfg/yolov3.cfg
+
+and the coco.names file which contains the 80 different class names used in the COCO dataset can be downloaded here.
+https://github.com/pjreddie/darknet/blob/master/data/coco.names

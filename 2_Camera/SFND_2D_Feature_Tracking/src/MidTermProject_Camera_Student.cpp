@@ -111,10 +111,10 @@ int main(int argc, const char *argv[])
         string descriptorType = parameters[1][0]; // DES_HOG, DES_BINARY
         string selectorType = "SEL_KNN";          // SEL_NN, SEL_KNN
 
-        for (const auto descriptorType : descriptors)
+        for (const auto descriptorType_ : descriptors)
         {
             cout << endl
-                 << "====================== detectorType " << detectorType << " descriptorType " << descriptorType << endl;
+                 << "====================== detectorType " << detectorType << " descriptorType " << descriptorType_ << endl;
             /* MAIN LOOP OVER ALL IMAGES */
             for (size_t imgIndex = 0; imgIndex <= imgEndIndex - imgStartIndex; imgIndex++)
             {
@@ -226,7 +226,7 @@ int main(int argc, const char *argv[])
                 cv::Mat descriptors;
                 double descriptor_time;
                 // BRISK, BRIEF, ORB (works with FAST detector), FREAK, AKAZE (works with AKAZE detector), SIFT
-                descKeypoints(actual_elem->keypoints, descriptor_time, actual_elem->cameraImg, descriptors, descriptorType);
+                descKeypoints(actual_elem->keypoints, descriptor_time, actual_elem->cameraImg, descriptors, descriptorType_);
                 //// EOF STUDENT ASSIGNMENT
 
                 // push descriptors for current frame to end of data buffer
@@ -270,7 +270,7 @@ int main(int argc, const char *argv[])
                                         cv::Scalar::all(-1), cv::Scalar::all(-1),
                                         vector<char>(), cv::DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
                         string path = "../data/processing_analysis";
-                        string file_name = detectorType + "_" + descriptorType + "_" + to_string(imgIndex) + ".jpg";
+                        string file_name = detectorType + "_" + descriptorType_ + "_" + to_string(imgIndex) + ".jpg";
                         file_name = path + "/" + file_name;
                         cv::imwrite(file_name, matchImg); // A JPG FILE IS BEING SAVED
 
@@ -287,7 +287,7 @@ int main(int argc, const char *argv[])
                     match_time = 0;
                 }
                 double total_time = detector_time + descriptor_time + match_time;
-                result << detectorType << ";" << descriptorType << ";" << detector_time << ";" << descriptor_time << ";" << match_time << ";" << nbr_detected_keypoints << ";" << avg_kp_size << ";" << nbr_matched_keypoints << ";" << total_time << ";" << endl;
+                result << detectorType << ";" << descriptorType_ << ";" << detector_time << ";" << descriptor_time << ";" << match_time << ";" << nbr_detected_keypoints << ";" << avg_kp_size << ";" << nbr_matched_keypoints << ";" << total_time << ";" << endl;
 
             } // eof loop over all images
 

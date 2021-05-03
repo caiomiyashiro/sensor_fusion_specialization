@@ -1,3 +1,0 @@
-/Users/caiomiyashiro/repo/sensor_fusion_specialization/2_Camera/3_popular_keypoint_detectors/detect_keypoints/build/CMakeFiles/rebuild_cache.dir
-/Users/caiomiyashiro/repo/sensor_fusion_specialization/2_Camera/3_popular_keypoint_detectors/detect_keypoints/build/CMakeFiles/edit_cache.dir
-/Users/caiomiyashiro/repo/sensor_fusion_specialization/2_Camera/3_popular_keypoint_detectors/detect_keypoints/build/CMakeFiles/detect_keypoints.dir

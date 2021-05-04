@@ -24,7 +24,20 @@ void matchDescriptors(std::vector<cv::KeyPoint> &kPtsSource, std::vector<cv::Key
             descSource.convertTo(descSource, CV_32F);
             descRef.convertTo(descRef, CV_32F);
         }
-        matcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
+
+        // with SIFT
+        if (descriptorType.compare("DES_HOG") == 0)
+        {
+            matcher = cv::FlannBasedMatcher::create();
+        }
+
+        // with all other binary descriptorTypes
+        else // if (descriptorType.compare("DES_BINARY") == 0)
+        {
+            const cv::Ptr<cv::flann::IndexParams>& indexParams = cv::makePtr<cv::flann::LshIndexParams>(12, 20, 2);
+            matcher = cv::makePtr<cv::FlannBasedMatcher>(indexParams);
+        }
+        // matcher = cv::DescriptorMatcher::create(cv::DescriptorMatcher::FLANNBASED);
     }
 
     // perform matching task
@@ -87,7 +100,7 @@ void descKeypoints(vector<cv::KeyPoint> &keypoints, cv::Mat &img, cv::Mat &descr
     }else if (descriptorType.compare("SIFT") == 0)
     {
         extractor = cv::SIFT::create();
-        // cv::xfeatures2d::SiftDescriptorExtractor::create(); // course desktop version
+        // extractor = cv::xfeatures2d::SiftDescriptorExtractor::create(); // course desktop version
     }
 
     // perform feature description
@@ -166,7 +179,7 @@ void detKeypointsModern(std::vector<cv::KeyPoint> &keypoints, cv::Mat &img, std:
     else if (detectorType.compare("SIFT") == 0)
     {
         detector = cv::SIFT::create();
-        // cv::xfeatures2d::SIFT::create(); // course desktop version
+        // detector = cv::xfeatures2d::SIFT::create(); // course desktop version
     }
     else
     {

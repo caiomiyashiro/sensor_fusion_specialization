@@ -157,7 +157,7 @@ int main(int argc, const char *argv[])
     map<string, vector<vector<string>>> detector_descriptor_matcher_combinations{
         {"SHITOMASI", {{"SIFT"}, {"DES_HOG"}}},
         {"HARRIS", {{"SIFT"}, {"DES_HOG"}}},
-        {"FAST", {{"BRISK", "BRIEF", "FREAK"}, {"DES_BINARY"}}},
+        {"FAST", {{"FREAK"}, {"DES_BINARY"}}},
         {"ORB", {{"ORB"}, {"DES_BINARY"}}},
         {"AKAZE", {{"AKAZE"}, {"DES_BINARY"}}},
         {"BRISK", {{"BRISK"}, {"DES_BINARY"}}},

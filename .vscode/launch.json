@@ -9,10 +9,10 @@
             "type": "cppdbg",
             "request": "launch",
             // "program": "/Users/caiomiyashiro/repo/SFND_Lidar_Obstacle_Detection/src/quiz/cluster/build/quizCluster",
-            "program": "/Users/caiomiyashiro/repo/sensor_fusion_specialization/2_Camera/SFND_2D_Feature_Tracking/build/2D_feature_tracking",
+            "program": "/Users/caiomiyashiro/repo/sensor_fusion_specialization/4_Kalman_Filters/2_laser_kalman_filter/build/kalmacaio",
             "args": [],
             "stopAtEntry": false,
-            "cwd": "${workspaceFolder}",
+            "cwd": "/Users/caiomiyashiro/repo/sensor_fusion_specialization/4_Kalman_Filters/2_laser_kalman_filter/build",
             "environment": [],
             "externalConsole": false,
             "MIMode": "lldb"
